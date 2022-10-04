@@ -17,8 +17,8 @@ var connection = mysql.createConnection({
 
     host: 'localhost',
     port: 3306,
-    user: 'yourDBuserName',
-    password: 'yourDBpassword',
+    user: 'root',
+    password: '8025407',
     database: 'draught_services'
 });
 

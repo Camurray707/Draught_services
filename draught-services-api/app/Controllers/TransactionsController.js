@@ -1,20 +1,19 @@
 const dbConnection = require('../../database/mySQLconnect');
 
-
-const allRoutes = async (ctx) => {
-    console.log('routes all routes called.');
+const allTransactions = async (ctx) => {
+    console.log('accounts all accounts called.');
     return new Promise((resolve, reject) => {
         const query = `
                        SELECT *
                         FROM 
-                            routes
-                        ORDER BY routeName
+                            transactions
+                        ORDER BY transactionID
                         `;
         dbConnection.query({
             sql: query,
         }, (error, tuples) => {
             if (error) {
-                console.log("Connection error in RoutesController::allRoutes", error);
+                console.log("Connection error in TransactionsController::allTransactions", error);
                 return reject(error);
             }
             ctx.body = tuples;
@@ -22,7 +21,7 @@ const allRoutes = async (ctx) => {
             return resolve();
         });
     }).catch(err => {
-        console.log("Database connection error in allRoutes.", err);
+        console.log("Database connection error in allTransactions.", err);
         // The UI side will have to look for the value of status and
         // if it is not 200, act appropriately.
         ctx.body = [];
@@ -30,22 +29,21 @@ const allRoutes = async (ctx) => {
     });
 }
 
-const routeWithRouteID = (ctx) => {
+const transactionsWithTransactionID = (ctx) => {
         return new Promise((resolve, reject) => {
             const query = `
                        SELECT *
                         FROM 
-                            routes
+                            transactions
                         WHERE 
-                            routeID = ?
-                        ORDER BY routeName
+                            transactionID = ?
                         `;
             dbConnection.query({
                 sql: query,
                 values: [ctx.params.routeID]
             }, (error, tuples) => {
                 if (error) {
-                    console.log("Connection error in RoutesController::routeWithRouteID", error);
+                    console.log("Connection error in TransactionsController::transactionsWithTransactionID", error);
                     ctx.body = [];
                     ctx.status = 200;
                     return reject(error);
@@ -55,7 +53,7 @@ const routeWithRouteID = (ctx) => {
                 return resolve();
             });
         }).catch(err => {
-            console.log("Database connection error in allRoutes.", err);
+            console.log("Database connection error in transactionsWithTransactionID.", err);
             // The UI side will have to look for the value of status and
             // if it is not 200, act appropriately.
             ctx.body = [];
@@ -64,6 +62,6 @@ const routeWithRouteID = (ctx) => {
 }
 
 module.exports = {
-    allRoutes,
-    routeWithRouteID
+    allTransactions,
+    transactionsWithTransactionID
 };

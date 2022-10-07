@@ -49,4 +49,12 @@ export default class APIInterface {
         return axiosAgent.get(`markets/${marketID}`);
     }
 
+    async allAccounts() {
+        return axiosAgent.get(`accounts/all-accounts`);
+    }
+
+    async accountsWithAccountID(accountID) {
+        return axiosAgent.get(`accounts/${accountID}`);
+    }
+
 }

@@ -83,8 +83,15 @@ const transactionsRouter = require('koa-router')({
     prefix: '/transactions'
 });
 transactionsRouter.use(VerifyJWT);
-transactionsRouter.get('/all-transactions', Authorize('admin'), TransactionsController.allTransactions, err => console.log(`allTrasactions ran into an error: ${err}`));
-transactionsRouter.get('/:transactionID/', Authorize('admin'), TransactionsController.transactionsWithTransactionID);
+transactionsRouter.get('/all-transactions', Authorize('admin'), TransactionsController.allTransactions, err => console.log(`allTransactions ran into an error: ${err}`));
+transactionsRouter.get('/:cycleID/', Authorize('admin'), TransactionsController.transactionsWithCycleID);
+transactionsRouter.get('/:cycleID/:accountID/one-account', Authorize('admin'), TransactionsController.transactionsWithAccountID);
+transactionsRouter.get('/:cycleID/:routeID/trans-for-route', Authorize('admin'), TransactionsController.transactionsWithRouteID);
+//todo::transactionsRouter.get('/:cycleID/all-routes', Authorize('admin'), TransactionsController.allRoutes, err => console.log(`all-routes ran into an error: ${err}`));
+transactionsRouter.get('/:cycleID/:marketID/trans-for-market', Authorize('admin'), TransactionsController.transactionsWithMarketID);
+
+
+
 
 
 

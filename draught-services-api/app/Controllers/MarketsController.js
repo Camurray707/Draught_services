@@ -34,13 +34,13 @@ const marketsWithMarketID = (ctx) => {
             const query = `
                        SELECT *
                         FROM 
-                            market
+                            markets
                         WHERE 
                             marketID = ?
                         `;
             dbConnection.query({
                 sql: query,
-                values: [ctx.params.routeID]
+                values: [ctx.params.marketID]
             }, (error, tuples) => {
                 if (error) {
                     console.log("Connection error in MarketsController::marketsWithMarketID", error);

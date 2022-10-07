@@ -22,10 +22,10 @@ const presentationComponents = (props) => {
             title: 'Accounts',
             component: <Accounts/>
         },
-        {
-            title: 'Transactions',
-            component: <Transactions />
-        },
+        // {
+        //     title: 'Transactions',
+        //     component: <Transactions />
+        // },
     ];
 };
 
@@ -33,7 +33,7 @@ const presentationComponents = (props) => {
 const containerComponents = (props) => {
     return [
         {
-            title: 'Activities',
+            title: 'Transactions',
             component: <Transactions />
         }
     ];

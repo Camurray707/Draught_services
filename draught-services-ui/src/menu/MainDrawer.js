@@ -16,6 +16,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+
 import {presentationComponents, containerComponents}  from './MenuPresentationComponents';
 import Button from "@mui/material/Button";
 
@@ -124,9 +127,8 @@ const ContainerListItems = (props) => {
             props.menuItemTitles.map(title =>
                 <ListItem button onClick={() => props.onClick(title)} key={title}>
                     <ListItemText primary={title} key={title}/>
-                    {
-                        props.selectedItem === title && <ListItemIcon><ChevronRightIcon/></ListItemIcon>
-                    }
+                    
+                    {props.transactionOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
             )
         }
@@ -149,7 +151,8 @@ const findSelectedComponent = (selectedItem) => {
 export default function MainDraswer({title, user, logoutAction}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [selectedItem, setSelectedItem] = useState('Summary');
+    const [selectedItem, setSelectedItem] = useState('TESTING');
+    const [transactionOpen, setTransactionOpen] = useState(false);
 
     console.log('in MainDrawer');
 
@@ -164,6 +167,10 @@ export default function MainDraswer({title, user, logoutAction}) {
     const handleSelectedItem = (title) => {
         setSelectedItem(title)
     };
+
+    const handleListDropDown = () => {
+        setTransactionOpen(!transactionOpen)
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -192,6 +199,11 @@ export default function MainDraswer({title, user, logoutAction}) {
                     <PresentationListItems selectedItem={selectedItem}
                                            onClick={handleSelectedItem}
                                            menuItemTitles={presentationComponents().map(comp => comp.title)}
+                    />
+                    <ContainerListItems selectedItem={selectedItem}
+                                        transactionOpen={transactionOpen}
+                                           onClick={handleListDropDown}
+                                           menuItemTitles={containerComponents().map(comp => comp.title)}
                     />
                 </List>
                

@@ -36,6 +36,13 @@ const loginRouter = require('koa-router')({
 });
 loginRouter.get('/:user_id', LoginController.authorizeUser, (err) => console.log("draught_services_routes.js: login-route error:", err));
 
+//Cycle route configuration.
+const CycleController = require('../app/Controllers/CycleController.js');
+const cycleRouter = require('koa-router')({
+    prefix: '/cycles'
+});
+cycleRouter.use(VerifyJWT);
+cycleRouter.get('/recent', Authorize('admin'), CycleController.getRecentCycle, (err) => console.log(`recent cycle ran into an error: ${err}`));
 
 // Routes router configuration.
 const RoutesController = require('../app/Controllers/RoutesController.js');
@@ -44,7 +51,10 @@ const routesRouter = require('koa-router')({
 });
 routesRouter.use(VerifyJWT);
 routesRouter.get('/all-routes', Authorize('admin'), RoutesController.allRoutes, err => console.log(`allRoutes ran into an error: ${err}`));
+routesRouter.get('/all-names', Authorize('admin'), RoutesController.allRouteNames, err => console.log(`allRoutes ran into an error: ${err}`));
 routesRouter.get('/:routeID/', Authorize('admin'), RoutesController.routeWithRouteID);
+routesRouter.get('/:routeID/by-name', Authorize('admin'), RoutesController.routeByName);
+
 
 
 // Markets router configuration.
@@ -55,6 +65,8 @@ const marketsRouter = require('koa-router')({
 marketsRouter.use(VerifyJWT);
 marketsRouter.get('/all-markets', Authorize('admin'), MarketsController.allMarkets, err => console.log(`allMarkets ran into an error: ${err}`));
 marketsRouter.get('/:marketID/', Authorize('admin'), MarketsController.marketsWithMarketID);
+marketsRouter.get('/:marketID/by-name', Authorize('admin'), MarketsController.marketByName);
+
 
 
 // Employees router configuration.
@@ -75,25 +87,22 @@ const accountsRouter = require('koa-router')({
 accountsRouter.use(VerifyJWT);
 accountsRouter.get('/all-accounts', Authorize('admin'), AccountsController.allAccounts, err => console.log(`allAccounts ran into an error: ${err}`));
 accountsRouter.get('/:accountID/', Authorize('admin'), AccountsController.accountsWithAccountID);
+accountsRouter.get('/:accountID/by-name', Authorize('admin'), AccountsController.accountByName);
 
 
-// Accounts router configuration.
+// Transactions router configuration.
 const TransactionsController = require('../app/Controllers/TransactionsController.js');
 const transactionsRouter = require('koa-router')({
     prefix: '/transactions'
 });
 transactionsRouter.use(VerifyJWT);
 transactionsRouter.get('/all-transactions', Authorize('admin'), TransactionsController.allTransactions, err => console.log(`allTransactions ran into an error: ${err}`));
+transactionsRouter.get('/summary', Authorize('admin'), TransactionsController.getSummary, err => console.log(`allTransactions ran into an error: ${err}`));
 transactionsRouter.get('/:cycleID/', Authorize('admin'), TransactionsController.transactionsWithCycleID);
 transactionsRouter.get('/:cycleID/:accountID/one-account', Authorize('admin'), TransactionsController.transactionsWithAccountID);
 transactionsRouter.get('/:cycleID/:routeID/trans-for-route', Authorize('admin'), TransactionsController.transactionsWithRouteID);
-//todo::transactionsRouter.get('/:cycleID/all-routes', Authorize('admin'), TransactionsController.allRoutes, err => console.log(`all-routes ran into an error: ${err}`));
+transactionsRouter.get('/:cycleID/all-routes', Authorize('admin'), TransactionsController.allRoutes, err => console.log(`all-routes ran into an error: ${err}`));
 transactionsRouter.get('/:cycleID/:marketID/trans-for-market', Authorize('admin'), TransactionsController.transactionsWithMarketID);
-
-
-
-
-
 
 
 /**
@@ -107,6 +116,7 @@ router.use(
     employeesRouter.routes(),
     accountsRouter.routes(),
     transactionsRouter.routes(),
+    cycleRouter.routes(),
 
 );
 
